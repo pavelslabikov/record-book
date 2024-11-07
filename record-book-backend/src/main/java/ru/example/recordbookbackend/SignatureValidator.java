@@ -13,7 +13,7 @@ import java.security.cert.X509Certificate;
 import java.util.Collections;
 
 public class SignatureValidator {
-    public static void validate(String[] args) throws Exception {
+    private static void validate(String[] args) throws Exception {
         Security.addProvider(new JCP());
         Security.addProvider(new RevCheck());
 

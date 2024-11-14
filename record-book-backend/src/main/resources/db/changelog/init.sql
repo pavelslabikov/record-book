@@ -57,7 +57,8 @@ create table sheet
     diploma_defense_date date                   null,
     protocol_date        date                   null,
     protocol_number      varchar                null,
-    type                 varchar                null,
+    research_type        varchar                null,
+    type                 varchar                not null,
     practice_place       varchar                null,
     primary key (id, version),
     teacher_id           int references teacher null

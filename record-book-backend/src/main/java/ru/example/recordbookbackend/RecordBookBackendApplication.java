@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class RecordBookBackendApplication {
 
     public static void main(String[] args) {
-        SignatureValidator.validate();
         SpringApplication.run(RecordBookBackendApplication.class, args);
     }
 

@@ -1,0 +1,19 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: record-book-backend
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: ${JDBC_URL:jdbc:postgresql://localhost:5432/postgres}
+    username: ${JDBC_USERNAME:postgres}
+    password: ${JDBC_PASSWORD:123}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      auto-commit: false
+      data-source-properties:
+        useUnicode: true
+        characterEncoding: UTF-8
+  sql:
+    init:
+      platform: postgres

@@ -42,4 +42,7 @@ public class UserInfo {
     @Column(name = "created_at", nullable = false)
     private ZonedDateTime createdAt;
 
+    @Column(name = "deleted", nullable = false)
+    private Boolean deleted = false;
+
 }

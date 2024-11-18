@@ -23,7 +23,7 @@ public class Student {
     private UUID id;
 
     @Column(name = "user_id")
-    private UUID user_id;
+    private UUID userId;
 
     @Column(name = "course_number", nullable = false)
     private Integer courseNumber;
@@ -39,5 +39,8 @@ public class Student {
 
     @Column(name = "specialization_code", nullable = false, length = Integer.MAX_VALUE)
     private String specializationCode;
+
+    @Column(name = "deleted", nullable = false)
+    private Boolean deleted = false;
 
 }

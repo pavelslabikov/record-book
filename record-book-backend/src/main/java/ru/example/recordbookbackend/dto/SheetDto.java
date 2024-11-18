@@ -1,8 +1,6 @@
 package ru.example.recordbookbackend.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.example.recordbookbackend.entity.SheetType;
 
 import java.io.Serializable;
@@ -11,7 +9,9 @@ import java.time.LocalDate;
 /**
  * DTO for {@link ru.example.recordbookbackend.entity.Sheet}
  */
-@Data
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class SheetDto implements Serializable {

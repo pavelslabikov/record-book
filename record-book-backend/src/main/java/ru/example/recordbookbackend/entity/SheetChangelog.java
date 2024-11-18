@@ -31,10 +31,6 @@ public class SheetChangelog {
     private Long entityId;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "entity_type", nullable = false, length = Integer.MAX_VALUE)
-    private EntityType entityType;
-
-    @Enumerated(EnumType.STRING)
     @Column(name = "operation", nullable = false, length = Integer.MAX_VALUE)
     private OperationType operation;
 

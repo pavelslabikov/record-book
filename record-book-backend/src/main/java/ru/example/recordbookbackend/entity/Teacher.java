@@ -21,12 +21,15 @@ public class Teacher {
     private Integer id;
 
     @Column(name = "user_id", nullable = false)
-    private UUID user_id;
+    private UUID userId;
 
     @Column(name = "academic_rank", nullable = false, length = Integer.MAX_VALUE)
     private String academicRank;
 
     @Column(name = "job_title", nullable = false, length = Integer.MAX_VALUE)
     private String jobTitle;
+
+    @Column(name = "deleted", nullable = false)
+    private Boolean deleted = false;
 
 }

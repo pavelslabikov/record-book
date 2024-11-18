@@ -1,8 +1,6 @@
 package ru.example.recordbookbackend.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -10,11 +8,13 @@ import java.util.UUID;
 /**
  * DTO for {@link ru.example.recordbookbackend.entity.Grade}
  */
-@Data
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class GradeDto implements Serializable {
-    private Long gradeId;
+    private Long id;
     private String value;
     private UUID student_id;
 }

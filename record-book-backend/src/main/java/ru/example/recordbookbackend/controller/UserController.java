@@ -21,7 +21,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1")
-@Tag(name = "user")
+@Tag(name = "user-controller")
 @RequiredArgsConstructor
 public class UserController {
     private final UserInfoRepository userInfoRepository;
@@ -54,7 +54,7 @@ public class UserController {
         return ResponseEntity.ok(mapper.toDto(userInfo));
     }
 
-    @PutMapping("/user/{id}")
+    @PutMapping("/user/")
     @Transactional
     public ResponseEntity<UserInfoDto> updateUser(@RequestBody UserInfoDto userInfoDto) {
         Optional<UserInfo> userInfo = userInfoRepository.findByIdAndDeleted(userInfoDto.getId(), false);

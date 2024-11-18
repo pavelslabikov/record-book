@@ -14,7 +14,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GradeDto implements Serializable {
-    private Long id;
     private String value;
     private UUID student_id;
 }

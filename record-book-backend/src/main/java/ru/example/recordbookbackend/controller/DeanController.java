@@ -1,0 +1,69 @@
+package ru.example.recordbookbackend.controller;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
+import ru.example.recordbookbackend.dto.DeanEmployeeDto;
+import ru.example.recordbookbackend.dto.TeacherDto;
+import ru.example.recordbookbackend.dto.mapper.DeanEmployeeMapper;
+import ru.example.recordbookbackend.dto.mapper.TeacherMapper;
+import ru.example.recordbookbackend.entity.DeanEmployee;
+import ru.example.recordbookbackend.entity.Teacher;
+import ru.example.recordbookbackend.repository.DeanEmployeeRepository;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/api/v1")
+@Tag(name = "dean-controller")
+@RequiredArgsConstructor
+public class DeanController {
+
+
+    private final DeanEmployeeRepository deanEmployeeRepository;
+
+    private final DeanEmployeeMapper mapper;
+
+
+    @GetMapping("/deans")
+    @Transactional
+    public ResponseEntity<List<DeanEmployeeDto>> getDeans() {
+        return ResponseEntity.ok(mapper.toDtos(deanEmployeeRepository.findAllByDeleted(false)));
+    }
+
+    @PostMapping("/dean")
+    @Transactional
+    public ResponseEntity<DeanEmployeeDto> createTeacher(@RequestBody DeanEmployeeDto studentDto) {
+        DeanEmployee student = mapper.toEntity(studentDto);
+        return ResponseEntity.ok(mapper.toDto(deanEmployeeRepository.save(student)));
+    }
+
+    @PutMapping("/dean/")
+    @Transactional
+    public ResponseEntity<DeanEmployeeDto> updateTeacher(@RequestBody DeanEmployeeDto studentDto) {
+        Optional<DeanEmployee> optionalStudent = deanEmployeeRepository.findByIdAndDeleted(studentDto.getId(), false);
+        if (optionalStudent.isPresent()) {
+            DeanEmployee newUser = mapper.partialUpdate(studentDto, optionalStudent.get());
+            return ResponseEntity.ok(mapper.toDto(deanEmployeeRepository.save(newUser)));
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/dean/{id}")
+    @Transactional
+    public ResponseEntity<Void> deleteTeacher(@PathVariable Integer id) {
+
+        Optional<DeanEmployee> student = deanEmployeeRepository.findByIdAndDeleted(id, false);
+        if (student.isPresent()) {
+            student.get().setDeleted(true);
+            deanEmployeeRepository.save(student.get());
+        }
+        return ResponseEntity.ok().build();
+    }
+
+
+}

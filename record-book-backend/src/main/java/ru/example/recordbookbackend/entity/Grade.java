@@ -18,7 +18,6 @@ import java.util.UUID;
 public class Grade {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 

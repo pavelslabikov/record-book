@@ -21,7 +21,6 @@ import java.util.Objects;
 public class VersionedId implements Serializable {
     private static final long serialVersionUID = -8749840325401432685L;
     @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long sheetId;
 
     @Column(name = "version", nullable = false)

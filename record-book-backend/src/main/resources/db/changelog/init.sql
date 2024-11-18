@@ -27,28 +27,28 @@ create table student
 
 create table teacher
 (
-    id            serial primary key,
-    user_id       uuid references user_info unique not null,
-    academic_rank varchar                          not null,
-    deleted       bool default false               not null,
-    job_title     varchar                          not null
+    id            int primary key,
+    user_id       uuid references user_info not null,
+    academic_rank varchar                   not null,
+    deleted       bool default false        not null,
+    job_title     varchar                   not null
 
 
 );
 
 create table dean_employee
 (
-    id        serial primary key,
-    user_id   uuid references user_info unique not null,
-    deleted   bool default false               not null,
-    job_title varchar                          not null
+    id        int primary key,
+    user_id   uuid references user_info not null,
+    deleted   bool default false        not null,
+    job_title varchar                   not null
 );
 
 
 
 create table sheet
 (
-    id                   bigserial              not null,
+    id                   bigint                 not null,
     version              bigint                 not null,
     created_at           timestamptz            not null,
     deleted              bool default false     not null,
@@ -71,7 +71,7 @@ create table sheet
 
 create table grade
 (
-    id            bigserial               not null primary key ,
+    id            bigserial               not null primary key,
     value         varchar                 null,
     student_id    uuid references student not null,
     created_at    timestamptz             not null,

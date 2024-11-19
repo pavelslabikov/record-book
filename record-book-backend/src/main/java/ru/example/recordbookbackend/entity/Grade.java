@@ -19,13 +19,14 @@ public class Grade {
 
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "value", length = Integer.MAX_VALUE)
     private String value;
 
     @Column(name = "student_id", nullable = false)
-    private UUID student_id;
+    private UUID studentId;
 
     @Column(name = "created_at", nullable = false)
     private ZonedDateTime createdAt;

@@ -1,0 +1,24 @@
+package ru.example.recordbookbackend.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import ru.example.recordbookbackend.entity.Sheet;
+import ru.example.recordbookbackend.entity.Student;
+import ru.example.recordbookbackend.entity.VersionedId;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface SheetRepository extends JpaRepository<Sheet, VersionedId> {
+    List<Sheet> findAllByDeleted(Boolean deleted);
+
+    List<Sheet> findAllByIdSheetId(Long id);
+
+    @Query("select s from Sheet as s where s.id.sheetId = :id order by s.id.sheetVersion desc limit 1")
+    Optional<Sheet> findLatest(@Param("id") Long id);
+
+
+
+}

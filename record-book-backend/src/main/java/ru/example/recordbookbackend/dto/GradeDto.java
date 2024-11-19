@@ -15,5 +15,5 @@ import java.util.UUID;
 @NoArgsConstructor
 public class GradeDto implements Serializable {
     private String value;
-    private UUID student_id;
+    private UUID studentId;
 }

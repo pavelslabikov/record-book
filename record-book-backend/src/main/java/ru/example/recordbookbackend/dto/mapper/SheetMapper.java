@@ -17,7 +17,6 @@ public interface SheetMapper {
     SheetDto toDto(Sheet userInfo);
     List<SheetDto> toDtos(List<Sheet> userInfos);
 
-    SheetWithGradesDto toSheetWithGradesDto(Sheet userInfo);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Sheet partialUpdate(SheetDto userInfoDto, @MappingTarget Sheet userInfo);

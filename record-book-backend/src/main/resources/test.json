@@ -1,0 +1,21 @@
+{
+  "sheetDto": {
+    "sheetId": 1,
+    "subjectName": "Математический анализ",
+    "academicYear": "2023-2024",
+    "creditUnits": 10,
+    "examDate": "2024-11-19",
+    "type": "MIDTERM_ASSESSMENT",
+    "teacherId": 1
+  },
+  "grades": [
+    {
+      "value": "100",
+      "studentId": "a1a3a2d7-7995-4d2d-bf17-b534a134517d"
+    },
+    {
+      "value": "60",
+      "studentId": "c0d5336c-3c0b-43bf-b751-48cf96b223f3"
+    }
+  ]
+}

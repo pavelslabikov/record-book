@@ -38,10 +38,11 @@ create table teacher
 
 create table dean_employee
 (
-    id        int primary key,
-    user_id   uuid references user_info not null,
-    deleted   bool default false        not null,
-    job_title varchar                   not null
+    id          int primary key,
+    user_id     uuid references user_info not null,
+    deleted     bool default false        not null,
+    job_title   varchar                   not null,
+    certificate bytea                     null
 );
 
 
@@ -90,4 +91,17 @@ create table sheet_changelog
     operation   varchar     not null,
     author      uuid references user_info,
     created_at  timestamptz not null
+);
+
+create table record_books_aggregation
+(
+    id                          uuid primary key,
+    signature_validation_result varchar     not null,
+    signature_file              bytea       null,
+    original_file               bytea       null,
+    file_digest                 bytea       null,
+    signature_validation_reason varchar     null,
+    period_start                date        not null,
+    period_end                  date        not null,
+    created_at                  timestamptz not null
 );

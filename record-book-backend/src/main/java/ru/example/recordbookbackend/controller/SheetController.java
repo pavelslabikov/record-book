@@ -41,9 +41,8 @@ public class SheetController {
         Set<Long> sheetIds = sheetRepository.findAllByDeleted(false).stream().map(s -> s.getId().getSheetId()).collect(Collectors.toSet());
         for (Long sheetId : sheetIds) {
             Sheet latest = sheetRepository.findLatest(sheetId).get();
-            SheetWithGradesDto sheetWithGradesDto = sheetMapper.toSheetWithGradesDto(latest);
             List<Grade> grades = gradeRepository.findAllBySheetIdAndSheetVersion(latest.getId().getSheetId(), latest.getId().getSheetVersion());
-            sheetWithGradesDto.setGrades(gradeMapper.toDtos(grades));
+            SheetWithGradesDto sheetWithGradesDto = new SheetWithGradesDto(sheetMapper.toDto(latest), gradeMapper.toDtos(grades));
             result.add(sheetWithGradesDto);
         }
 

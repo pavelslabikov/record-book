@@ -1,5 +1,6 @@
 package ru.example.recordbookbackend.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import ru.example.recordbookbackend.entity.SheetType;
 
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class SheetDto implements Serializable {
     private Long sheetId;
     private String subjectName;

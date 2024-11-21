@@ -8,6 +8,8 @@ import ru.example.recordbookbackend.entity.Sheet;
 import ru.example.recordbookbackend.entity.Student;
 import ru.example.recordbookbackend.entity.VersionedId;
 
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +20,8 @@ public interface SheetRepository extends JpaRepository<Sheet, VersionedId> {
 
     @Query("select s from Sheet as s where s.id.sheetId = :id order by s.id.sheetVersion desc limit 1")
     Optional<Sheet> findLatest(@Param("id") Long id);
+
+    List<Sheet> findAllByExamDateBetweenAndDeleted(LocalDate before, LocalDate after, Boolean deleted);
 
 
 

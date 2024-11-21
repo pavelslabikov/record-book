@@ -61,19 +61,19 @@ public class SheetChangelogController {
         UserInfo userInfo = userInfoRepository.findById(sheetChangelog.getAuthor()).get();
         detailed.setUserInfoDto(userInfoMapper.toDto(userInfo));
 
-        Sheet oldSheet = sheetRepository.findById(new VersionedId(sheetId, sheetChangelog.getOldVersion())).get();
-        SheetWithGradesDto oldDto = sheetMapper.toSheetWithGradesDto(oldSheet);
-        List<Grade> oldGrades = gradeRepository.findAllBySheetIdAndSheetVersion(sheetId, sheetChangelog.getOldVersion());
-        oldDto.setGrades(gradeMapper.toDtos(oldGrades));
-        detailed.setOldSheet(oldDto);
+        if (sheetChangelog.getOldVersion() != null) {
+            Sheet oldSheet = sheetRepository.findById(new VersionedId(sheetId, sheetChangelog.getOldVersion())).get();
+            List<Grade> oldGrades = gradeRepository.findAllBySheetIdAndSheetVersion(sheetId, sheetChangelog.getOldVersion());
+            SheetWithGradesDto oldDto = new SheetWithGradesDto(sheetMapper.toDto(oldSheet), gradeMapper.toDtos(oldGrades));
+            detailed.setOldSheet(oldDto);
+        }
 
-        Sheet newSheet = sheetRepository.findById(new VersionedId(sheetId, sheetChangelog.getNewVersion())).get();
-        SheetWithGradesDto newDto = sheetMapper.toSheetWithGradesDto(newSheet);
-        List<Grade> newGrades = gradeRepository.findAllBySheetIdAndSheetVersion(sheetId, sheetChangelog.getNewVersion());
-        newDto.setGrades(gradeMapper.toDtos(newGrades));
-        detailed.setNewSheet(newDto);
-
-
+        if (sheetChangelog.getNewVersion() != null) {
+            Sheet newSheet = sheetRepository.findById(new VersionedId(sheetId, sheetChangelog.getNewVersion())).get();
+            List<Grade> newGrades = gradeRepository.findAllBySheetIdAndSheetVersion(sheetId, sheetChangelog.getNewVersion());
+            SheetWithGradesDto newDto = new SheetWithGradesDto(sheetMapper.toDto(newSheet), gradeMapper.toDtos(newGrades));
+            detailed.setNewSheet(newDto);
+        }
 
         return ResponseEntity.ok(detailed);
     }

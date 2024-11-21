@@ -1,9 +1,6 @@
 package ru.example.recordbookbackend.dto.controller;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import ru.example.recordbookbackend.dto.*;
 
 import java.io.Serializable;
@@ -13,6 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
 public class SheetWithGradesDto implements Serializable {
 
     private SheetDto sheetDto;

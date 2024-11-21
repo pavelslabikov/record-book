@@ -1,5 +1,6 @@
 package ru.example.recordbookbackend.controller;
 
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -69,11 +70,11 @@ public class DeanController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping(value = "/dean/{id}/certificate", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @PostMapping(value = "/dean/{id}/certificate", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Transactional
-    public ResponseEntity<Void> uploadDeanCertificate(@PathVariable Integer id, InputStream file) throws IOException {
+    public ResponseEntity<Void> uploadDeanCertificate(@PathVariable Integer id, @RequestPart(name = "file") MultipartFile file) throws IOException {
         DeanEmployee deanEmployee = deanEmployeeRepository.findByIdAndDeleted(id, false).get();
-        deanEmployee.setCertificate(file.readAllBytes());
+        deanEmployee.setCertificate(file.getBytes());
         deanEmployeeRepository.save(deanEmployee);
         return ResponseEntity.ok().build();
     }

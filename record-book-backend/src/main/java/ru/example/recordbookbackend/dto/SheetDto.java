@@ -1,5 +1,6 @@
 package ru.example.recordbookbackend.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import ru.example.recordbookbackend.entity.SheetType;
@@ -21,10 +22,13 @@ public class SheetDto implements Serializable {
     private String subjectName;
     private String academicYear;
     private Integer creditUnits;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
     private LocalDate examDate;
     private String diplomaForm;
     private String topic;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
     private LocalDate diplomaDefenseDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
     private LocalDate protocolDate;
     private String protocolNumber;
     private SheetType type;

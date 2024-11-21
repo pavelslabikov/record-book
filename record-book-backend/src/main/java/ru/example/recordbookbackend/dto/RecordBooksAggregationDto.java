@@ -1,5 +1,6 @@
 package ru.example.recordbookbackend.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import ru.example.recordbookbackend.entity.SignatureValidationResultType;
@@ -22,7 +23,10 @@ public class RecordBooksAggregationDto implements Serializable {
     private UUID id;
     private SignatureValidationResultType signatureValidationResult;
     private String signatureValidationReason;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
     private LocalDate periodStart;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
     private LocalDate periodEnd;
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private ZonedDateTime createdAt;
 }

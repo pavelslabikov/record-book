@@ -17,6 +17,7 @@ import ru.example.recordbookbackend.dto.controller.SheetWithGradesDto;
 import ru.example.recordbookbackend.dto.mapper.*;
 import ru.example.recordbookbackend.entity.*;
 import ru.example.recordbookbackend.repository.*;
+import ru.example.recordbookbackend.service.RecordBookSerializer;
 import ru.example.recordbookbackend.service.SignatureValidator;
 
 import java.io.*;
@@ -52,6 +53,8 @@ public class RecordBookController {
 
     private final DeanEmployeeRepository deanEmployeeRepository;
 
+    private final RecordBookSerializer recordBookSerializer;
+
     @PostMapping(value = "/record-books/aggregation")
     @Transactional
     public ResponseEntity<RecordBooksAggregationDto> createRecordBookAgg(@RequestParam("periodStart") LocalDate periodStart,
@@ -75,7 +78,7 @@ public class RecordBookController {
             result.add(withGradesDto);
         }
 
-        byte[] content = objectMapper.writeValueAsBytes(result);
+        byte[] content = recordBookSerializer.serialize(result);
         RecordBooksAggregation aggregation = new RecordBooksAggregation();
         aggregation.setCreatedAt(ZonedDateTime.now());
         aggregation.setId(UUID.randomUUID());
@@ -108,16 +111,16 @@ public class RecordBookController {
         return ResponseEntity.ok(aggregationMapper.toDtos(all));
     }
 
-    @PostMapping(value = "/record-books/aggregation/{id}/signature", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @PostMapping(value = "/record-books/aggregation/{id}/signature", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Transactional
     public ResponseEntity<RecordBooksAggregationDto> signRecordBookAgg(@PathVariable("id") UUID aggregationId,
                                                                        @RequestParam("deanId") Integer deanId,
-                                                                        InputStream signatureStream) {
+                                                                       @RequestPart(name = "file") MultipartFile file) {
 
         RecordBooksAggregation aggregation = aggregationRepository.findById(aggregationId).get();
         DeanEmployee deanEmployee = deanEmployeeRepository.findById(deanId).get();
         try {
-            byte[] signature = signatureStream.readAllBytes();
+            byte[] signature = file.getBytes();
             CAdESSignature cades = signatureValidator.validate(aggregation.getOriginalFile(), signature, new ByteArrayInputStream(deanEmployee.getCertificate()));
             aggregation.setFileDigest(cades.getCAdESSignerInfo(0).getSignerInfo().getContentDigest());
             aggregation.setSignatureFile(signature);

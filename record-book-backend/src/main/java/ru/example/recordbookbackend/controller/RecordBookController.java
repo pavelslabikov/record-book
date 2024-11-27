@@ -2,6 +2,7 @@ package ru.example.recordbookbackend.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -29,7 +30,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1")
-@Tag(name = "record-book-controller")
+@Tag(name = "record-book-controller", description = "Контроллер управления зачётными книгами")
 @RequiredArgsConstructor
 public class RecordBookController {
 
@@ -57,6 +58,7 @@ public class RecordBookController {
 
     @PostMapping(value = "/record-books/aggregation")
     @Transactional
+    @Operation(summary = "Создать агрегацию зачётных книг за временной отрезок")
     public ResponseEntity<RecordBooksAggregationDto> createRecordBookAgg(@RequestParam("periodStart") LocalDate periodStart,
                                                                          @RequestParam("periodEnd") LocalDate periodEnd)
             throws JsonProcessingException {
@@ -95,6 +97,7 @@ public class RecordBookController {
 
     @GetMapping(value = "/record-books/aggregation/{id}/file", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Transactional
+    @Operation(summary = "Скачать файл агрегации зачётных книг")
     public ResponseEntity<byte[]> getRecordBookAgg(@PathVariable("id") UUID aggregationId) throws IOException {
         byte[] result = aggregationRepository.findById(aggregationId).get().getOriginalFile();
 
@@ -106,6 +109,7 @@ public class RecordBookController {
 
     @GetMapping(value = "/record-books/aggregations")
     @Transactional
+    @Operation(summary = "Получить все агрегации")
     public ResponseEntity<List<RecordBooksAggregationDto>> getAllRecordBookAggs() {
         List<RecordBooksAggregation> all = aggregationRepository.findAll();
         return ResponseEntity.ok(aggregationMapper.toDtos(all));
@@ -113,6 +117,7 @@ public class RecordBookController {
 
     @PostMapping(value = "/record-books/aggregation/{id}/signature", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Transactional
+    @Operation(summary = "Загрузить подписанный файл агрегации")
     public ResponseEntity<RecordBooksAggregationDto> signRecordBookAgg(@PathVariable("id") UUID aggregationId,
                                                                        @RequestParam("deanId") Integer deanId,
                                                                        @RequestPart(name = "file") MultipartFile file) {

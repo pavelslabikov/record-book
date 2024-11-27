@@ -1,5 +1,6 @@
 package ru.example.recordbookbackend.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1")
-@Tag(name = "dean-controller")
+@Tag(name = "dean-controller", description = "Контроллер управления сотрудниками деканата")
 @RequiredArgsConstructor
 public class DeanController {
 
@@ -72,6 +73,7 @@ public class DeanController {
 
     @PostMapping(value = "/dean/{id}/certificate", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Transactional
+    @Operation(summary = "Загрузить файл сертификата, принадлежащего сотруднику деканата")
     public ResponseEntity<Void> uploadDeanCertificate(@PathVariable Integer id, @RequestPart(name = "file") MultipartFile file) throws IOException {
         DeanEmployee deanEmployee = deanEmployeeRepository.findByIdAndDeleted(id, false).get();
         deanEmployee.setCertificate(file.getBytes());

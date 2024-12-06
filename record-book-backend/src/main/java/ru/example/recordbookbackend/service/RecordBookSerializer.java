@@ -29,7 +29,7 @@ public class RecordBookSerializer {
     private final ObjectMapper objectMapper;
 
     public byte[] serialize(List<SheetWithGradesDto> list) throws JsonProcessingException {
-        Map<UUID, NormalizedRecordBookDto> result = new HashMap<>();
+        Map<Integer, NormalizedRecordBookDto> result = new HashMap<>();
         for (SheetWithGradesDto sheetWithGradesDto : list) {
             SheetDto sheetDto = sheetWithGradesDto.getSheetDto();
             List<GradeDto> grades = sheetWithGradesDto.getGrades();
@@ -81,14 +81,14 @@ public class RecordBookSerializer {
     }
 
 
-    private NormalizedRecordBookDto createBook(UUID studentId) {
+    private NormalizedRecordBookDto createBook(Integer studentId) {
         NormalizedRecordBookDto bookDto = new NormalizedRecordBookDto();
         Student student = studentRepository.findByIdAndDeleted(studentId, false).get();
         UserInfo userInfo = userInfoRepository.findByIdAndDeleted(student.getUserId(), false).get();
         bookDto.setName(userInfo.getName());
         bookDto.setPatronymic(userInfo.getPatronymic());
         bookDto.setSurname(userInfo.getSurname());
-        bookDto.setStudentIdCard(student.getId());
+        bookDto.setStudentIdCard(student.getIdCardNumber());
         bookDto.setRecordBookId(student.getGradeBookNumber());
         bookDto.setCourseNumber(student.getCourseNumber());
 

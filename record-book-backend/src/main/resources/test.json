@@ -14,11 +14,11 @@
   "grades": [
     {
       "value": "Отлично",
-      "studentId": "a1a3a2d7-7995-4d2d-bf17-b534a134517d"
+      "studentId": 1
     },
     {
       "value": "Хорошо",
-      "studentId": "c0d5336c-3c0b-43bf-b751-48cf96b223f3"
+      "studentId": 2
     }
   ]
 }
@@ -38,7 +38,7 @@
   "grades": [
     {
       "value": "Зачёт",
-      "studentId": "a1a3a2d7-7995-4d2d-bf17-b534a134517d"
+      "studentId": 1
     }
   ]
 }
@@ -60,11 +60,11 @@
     "grades": [
       {
         "value": "5",
-        "studentId": "a1a3a2d7-7995-4d2d-bf17-b534a134517d"
+        "studentId": 1
       },
       {
         "value": "4",
-        "studentId": "c0d5336c-3c0b-43bf-b751-48cf96b223f3"
+        "studentId": 2
       }
     ]
   }

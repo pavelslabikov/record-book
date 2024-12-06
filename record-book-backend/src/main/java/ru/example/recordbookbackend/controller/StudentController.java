@@ -8,17 +8,12 @@ import org.springframework.web.bind.annotation.*;
 import ru.example.recordbookbackend.dto.StudentDto;
 import ru.example.recordbookbackend.dto.UserInfoDto;
 import ru.example.recordbookbackend.dto.controller.StudentWithUserInfoDto;
-import ru.example.recordbookbackend.dto.controller.TeacherWithUserInfoDto;
-import ru.example.recordbookbackend.dto.controller.UserInfoWithPasswordDto;
 import ru.example.recordbookbackend.dto.mapper.StudentMapper;
 import ru.example.recordbookbackend.dto.mapper.UserInfoMapper;
 import ru.example.recordbookbackend.entity.*;
-import ru.example.recordbookbackend.repository.DeanEmployeeRepository;
 import ru.example.recordbookbackend.repository.StudentRepository;
-import ru.example.recordbookbackend.repository.TeacherRepository;
 import ru.example.recordbookbackend.repository.UserInfoRepository;
 
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -77,7 +72,7 @@ public class StudentController {
 
     @DeleteMapping("/student/{id}")
     @Transactional
-    public ResponseEntity<Void> deleteStudent(@PathVariable UUID id) {
+    public ResponseEntity<Void> deleteStudent(@PathVariable Integer id) {
 
         Optional<Student> student = studentRepository.findByIdAndDeleted(id, false);
         if (student.isPresent()) {

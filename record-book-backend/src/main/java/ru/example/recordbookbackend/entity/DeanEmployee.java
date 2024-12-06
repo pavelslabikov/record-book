@@ -28,7 +28,4 @@ public class DeanEmployee {
     @Column(name = "deleted", nullable = false)
     private Boolean deleted = false;
 
-    @Column(name = "certificate")
-    private byte[] certificate;
-
 }

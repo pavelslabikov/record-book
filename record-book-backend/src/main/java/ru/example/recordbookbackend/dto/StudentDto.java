@@ -14,7 +14,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StudentDto implements Serializable {
-    private UUID id;
+    private Integer id;
+    private UUID idCardNumber;
     private UUID userId;
     private Integer courseNumber;
     private String groupName;

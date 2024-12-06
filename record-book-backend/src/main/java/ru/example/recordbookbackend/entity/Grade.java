@@ -26,7 +26,7 @@ public class Grade {
     private String value;
 
     @Column(name = "student_id", nullable = false)
-    private UUID studentId;
+    private Integer studentId;
 
     @Column(name = "created_at", nullable = false)
     private ZonedDateTime createdAt;

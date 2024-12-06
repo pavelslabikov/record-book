@@ -71,15 +71,15 @@ public class DeanController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping(value = "/dean/{id}/certificate", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Transactional
-    @Operation(summary = "Загрузить файл сертификата, принадлежащего сотруднику деканата")
-    public ResponseEntity<Void> uploadDeanCertificate(@PathVariable Integer id, @RequestPart(name = "file") MultipartFile file) throws IOException {
-        DeanEmployee deanEmployee = deanEmployeeRepository.findByIdAndDeleted(id, false).get();
-        deanEmployee.setCertificate(file.getBytes());
-        deanEmployeeRepository.save(deanEmployee);
-        return ResponseEntity.ok().build();
-    }
+//    @PostMapping(value = "/dean/{id}/certificate", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    @Transactional
+//    @Operation(summary = "Загрузить файл сертификата, принадлежащего сотруднику деканата")
+//    public ResponseEntity<Void> uploadDeanCertificate(@PathVariable Integer id, @RequestPart(name = "file") MultipartFile file) throws IOException {
+//        DeanEmployee deanEmployee = deanEmployeeRepository.findByIdAndDeleted(id, false).get();
+//        deanEmployee.setCertificate(file.getBytes());
+//        deanEmployeeRepository.save(deanEmployee);
+//        return ResponseEntity.ok().build();
+//    }
 
 
 }

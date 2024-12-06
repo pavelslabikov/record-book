@@ -34,7 +34,7 @@ public class SignatureValidator {
         System.setProperty("com.sun.security.enableAIAcaIssuers", "true");
     }
 
-    public CAdESSignature validate(byte[] file, byte[] signature, InputStream cert) throws Exception {
+    public CAdESSignature validate(byte[] file, byte[] signature) throws Exception {
 
 //        File file = new File("hh.txt");
 //        FileInputStream fileInputStream = new FileInputStream(file);

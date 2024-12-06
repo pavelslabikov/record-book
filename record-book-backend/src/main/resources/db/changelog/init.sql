@@ -14,7 +14,8 @@ create table user_info
 
 create table student
 (
-    id_card_number      uuid primary key,
+    id_card_number      uuid,
+    id                  int primary key,
     user_id             uuid references user_info,
     course_number       int                not null,
     group_name          varchar            not null,
@@ -41,8 +42,7 @@ create table dean_employee
     id          int primary key,
     user_id     uuid references user_info not null,
     deleted     bool default false        not null,
-    job_title   varchar                   not null,
-    certificate bytea                     null
+    job_title   varchar                   not null
 );
 
 
@@ -74,7 +74,7 @@ create table grade
 (
     id            bigserial               not null primary key,
     value         varchar                 null,
-    student_id    uuid references student not null,
+    student_id    int references student not null,
     created_at    timestamptz             not null,
     sheet_id      bigint                  not null,
     sheet_version bigint                  not null,
@@ -93,15 +93,55 @@ create table sheet_changelog
     created_at  timestamptz not null
 );
 
+create table certificate_info
+(
+    id           uuid primary key,
+    type         varchar     not null,
+    not_before   date        null,
+    not_after    date        null,
+    content      bytea       not null,
+    subject_info varchar     not null,
+    created_at   timestamptz not null
+);
+
+create table signature_info
+(
+    id                uuid primary key,
+    type              varchar     not null,
+    certificate       uuid        not null references certificate_info,
+    signature_file    bytea       null,
+    original_file     bytea       null,
+    file_digest       bytea       null,
+    digest_algorithm  varchar     null,
+    signed_at         timestamptz null,
+    created_at        timestamptz not null
+);
+
+
 create table record_books_aggregation
 (
-    id                          uuid primary key,
-    signature_validation_result varchar     not null,
-    signature_file              bytea       null,
-    original_file               bytea       null,
-    file_digest                 bytea       null,
-    signature_validation_reason varchar     null,
-    period_start                date        not null,
-    period_end                  date        not null,
-    created_at                  timestamptz not null
+    id           bigint not null ,
+    version bigint      not null,
+    period_start date        not null,
+    period_end   date        not null,
+    signature    uuid        null references signature_info,
+    author       uuid        not null references user_info,
+    primary key (id, version),
+    created_at   timestamptz not null
 );
+
+create table aggregation_status
+(
+    id                bigserial primary key,
+    aggregation_id bigint not null ,
+    aggregation_version bigint not null ,
+    signature_validation_result varchar not null ,
+    signature_validation_reason varchar  null ,
+    integrity_validation_result varchar not null ,
+    integrity_validation_reason varchar  null ,
+    created_at        timestamptz not null,
+foreign key (aggregation_id, aggregation_version) references record_books_aggregation
+);
+
+
+

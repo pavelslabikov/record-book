@@ -18,9 +18,13 @@ import java.util.UUID;
 @ToString
 @RequiredArgsConstructor
 public class Student {
+
     @Id
+    @Column(name = "id", nullable = false)
+    private Integer id;
+
     @Column(name = "id_card_number", nullable = false)
-    private UUID id;
+    private UUID idCardNumber;
 
     @Column(name = "user_id")
     private UUID userId;

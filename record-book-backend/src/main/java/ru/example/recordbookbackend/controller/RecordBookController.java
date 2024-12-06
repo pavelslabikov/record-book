@@ -123,10 +123,9 @@ public class RecordBookController {
                                                                        @RequestPart(name = "file") MultipartFile file) {
 
         RecordBooksAggregation aggregation = aggregationRepository.findById(aggregationId).get();
-        DeanEmployee deanEmployee = deanEmployeeRepository.findById(deanId).get();
         try {
             byte[] signature = file.getBytes();
-            CAdESSignature cades = signatureValidator.validate(aggregation.getOriginalFile(), signature, new ByteArrayInputStream(deanEmployee.getCertificate()));
+            CAdESSignature cades = signatureValidator.validate(aggregation.getOriginalFile(), signature);
             aggregation.setFileDigest(cades.getCAdESSignerInfo(0).getSignerInfo().getContentDigest());
             aggregation.setSignatureFile(signature);
             aggregation.setSignatureValidationResult(SignatureValidationResultType.VALID);

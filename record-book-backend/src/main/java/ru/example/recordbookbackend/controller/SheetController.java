@@ -38,10 +38,10 @@ public class SheetController {
     @Transactional
     public ResponseEntity<List<SheetWithGradesDto>> getSheets() {
         List<SheetWithGradesDto> result = new ArrayList<>();
-        Set<Long> sheetIds = sheetRepository.findAllByDeleted(false).stream().map(s -> s.getId().getSheetId()).collect(Collectors.toSet());
+        Set<Long> sheetIds = sheetRepository.findAllByDeleted(false).stream().map(s -> s.getVersionedId().getId()).collect(Collectors.toSet());
         for (Long sheetId : sheetIds) {
             Sheet latest = sheetRepository.findLatest(sheetId).get();
-            List<Grade> grades = gradeRepository.findAllBySheetIdAndSheetVersion(latest.getId().getSheetId(), latest.getId().getSheetVersion());
+            List<Grade> grades = gradeRepository.findAllBySheetIdAndSheetVersion(latest.getVersionedId().getId(), latest.getVersionedId().getVersion());
             SheetWithGradesDto sheetWithGradesDto = new SheetWithGradesDto(sheetMapper.toDto(latest), gradeMapper.toDtos(grades));
             result.add(sheetWithGradesDto);
         }
@@ -54,27 +54,27 @@ public class SheetController {
     public ResponseEntity<SheetWithGradesDto> createSheet(@RequestBody SheetWithGradesDto sheetWithGradesDto,
                                                           @RequestParam("userId") UUID userId) {
         Optional<Sheet> latestSheet = sheetRepository.findLatest(sheetWithGradesDto.getSheetDto().getSheetId());
-        Long newVersion = latestSheet.map(sheet -> sheet.getId().getSheetVersion() + 1L).orElse(1L);
+        Long newVersion = latestSheet.map(sheet -> sheet.getVersionedId().getVersion() + 1L).orElse(1L);
 
         Sheet sheetEntity = sheetMapper.toEntity(sheetWithGradesDto.getSheetDto());
         sheetEntity.setCreatedAt(ZonedDateTime.now());
         VersionedId id = new VersionedId();
-        id.setSheetId(sheetWithGradesDto.getSheetDto().getSheetId());
-        id.setSheetVersion(newVersion);
-        sheetEntity.setId(id);
+        id.setId(sheetWithGradesDto.getSheetDto().getSheetId());
+        id.setVersion(newVersion);
+        sheetEntity.setVersionedId(id);
         sheetRepository.save(sheetEntity);
 
         List<Grade> grades = gradeMapper.toEntities(sheetWithGradesDto.getGrades());
         for (Grade grade : grades) {
             grade.setCreatedAt(ZonedDateTime.now());
             grade.setSheetVersion(newVersion);
-            grade.setSheetId(id.getSheetId());
+            grade.setSheetId(id.getId());
         }
         gradeRepository.saveAll(grades);
 
         SheetChangelog sheetChangelog = new SheetChangelog();
         sheetChangelog.setCreatedAt(ZonedDateTime.now());
-        sheetChangelog.setEntityId(id.getSheetId());
+        sheetChangelog.setEntityId(id.getId());
         sheetChangelog.setAuthor(userId);
         sheetChangelog.setNewVersion(newVersion);
         if (latestSheet.isEmpty() || latestSheet.get().getDeleted()) {
@@ -93,7 +93,7 @@ public class SheetController {
     public ResponseEntity<Void> deleteSheet(@PathVariable Long sheetId, @RequestParam("userId") UUID userId) {
         Sheet sheet = sheetRepository.findLatest(sheetId).get();
 
-        List<Sheet> toDelete = sheetRepository.findAllByIdSheetId(sheetId);
+        List<Sheet> toDelete = sheetRepository.findAllByVersionedIdId(sheetId);
         toDelete.forEach(s -> s.setDeleted(true));
         sheetRepository.saveAll(toDelete);
 
@@ -107,7 +107,7 @@ public class SheetController {
         sheetChangelog.setCreatedAt(ZonedDateTime.now());
         sheetChangelog.setOperation(OperationType.DELETE);
         sheetChangelog.setEntityId(sheetId);
-        sheetChangelog.setOldVersion(sheet.getId().getSheetVersion());
+        sheetChangelog.setOldVersion(sheet.getVersionedId().getVersion());
         sheetChangelog.setAuthor(userId);
         sheetChangelogRepository.save(sheetChangelog);
 

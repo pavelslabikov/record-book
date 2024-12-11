@@ -108,9 +108,8 @@ create table signature_info
 (
     id                uuid primary key,
     type              varchar     not null,
-    certificate       uuid        not null references certificate_info,
+    certificate       uuid        null references certificate_info,
     signature_file    bytea       null,
-    original_file     bytea       null,
     file_digest       bytea       null,
     digest_algorithm  varchar     null,
     signed_at         timestamptz null,
@@ -127,6 +126,8 @@ create table record_books_aggregation
     signature    uuid        null references signature_info,
     author       uuid        not null references user_info,
     primary key (id, version),
+    serialization_format varchar not null ,
+    serialized_content bytea not null ,
     created_at   timestamptz not null
 );
 

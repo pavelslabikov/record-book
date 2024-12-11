@@ -59,8 +59,8 @@ public class SignatureValidator {
 
     }
 
-    private static class AllCertificatesSelector implements Selector {
-        private AllCertificatesSelector() {
+    public static class AllCertificatesSelector implements Selector {
+        public AllCertificatesSelector() {
         }
 
         public boolean match(Object var1) {

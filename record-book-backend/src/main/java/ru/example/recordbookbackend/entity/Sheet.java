@@ -17,7 +17,7 @@ import java.time.ZonedDateTime;
 @RequiredArgsConstructor
 public class Sheet {
     @EmbeddedId
-    private VersionedId id;
+    private VersionedId versionedId;
 
     @Column(name = "created_at", nullable = false)
     private ZonedDateTime createdAt;

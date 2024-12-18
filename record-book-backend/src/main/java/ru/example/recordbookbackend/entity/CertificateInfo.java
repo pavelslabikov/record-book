@@ -37,6 +37,9 @@ public class CertificateInfo {
     @Column(name = "subject_info", nullable = false, length = Integer.MAX_VALUE)
     private String subjectInfo;
 
+    @Column(name = "issuer_info", nullable = false, length = Integer.MAX_VALUE)
+    private String issuerInfo;
+
     @NotNull
     @Column(name = "created_at", nullable = false)
     private ZonedDateTime createdAt;

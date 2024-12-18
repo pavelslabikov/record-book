@@ -40,7 +40,7 @@ public class AggregationStatus {
     private String integrityValidationReason;
 
     @NotNull
-    @Column(name = "created_at", nullable = false)
-    private ZonedDateTime createdAt;
+    @Column(name = "last_updated_at", nullable = false)
+    private ZonedDateTime updatedAt;
 
 }

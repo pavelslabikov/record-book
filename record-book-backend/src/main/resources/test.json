@@ -1,37 +1,73 @@
 [
-  {
-    "studentIdCard": "a1a3a2d7-7995-4d2d-bf17-b534a134517d",
-    "surname": "Петров",
-    "name": "Пётр",
-    "patronymic": "Петрович",
-    "courseNumber": 1,
-    "recordBookId": "000001",
-    "form": "ВКР",
-    "topic": "Производство сыров",
-    "defenseDate": "20.11.2024",
-    "grade": "5",
-    "protocolNumber": "12313",
-    "protocolDate": "20.11.2024",
-    "midtermAssessmentResults": [
-      "Математический анализ|2023-2024|10|Отлично|19.11.2024|Дмитров.Д.Д",
-      "Функциональный анализ|2023-2024|8|Зачёт|20.11.2024|Дмитров.Д.Д"
-    ]
+
+
+{
+  "sheetDto": {
+    "sheetId": 1,
+    "subjectName": "Математический анализ",
+    "academicYear": "2023-2024",
+    "creditUnits": 10,
+    "examDate": "19.11.2024",
+    "type": "MIDTERM_ASSESSMENT",
+    "teacherId": 1
   },
+  "grades": [
+    {
+      "value": "Отлично",
+      "studentId": 1
+    },
+    {
+      "value": "Хорошо",
+      "studentId": 2
+    }
+  ]
+}
+
+,
+
+{
+  "sheetDto": {
+    "sheetId": 2,
+    "subjectName": "Функциональный анализ",
+    "academicYear": "2023-2024",
+    "creditUnits": 8,
+    "examDate": "20.11.2024",
+    "type": "MIDTERM_ASSESSMENT",
+    "teacherId": 1
+  },
+  "grades": [
+    {
+      "value": "Зачёт",
+      "studentId": 1
+    }
+  ]
+}
+
+  ,
+
+
   {
-    "studentIdCard": "c0d5336c-3c0b-43bf-b751-48cf96b223f3",
-    "surname": "Сидоров",
-    "name": "Семён",
-    "patronymic": "Семёнович",
-    "courseNumber": 1,
-    "recordBookId": "000002",
-    "form": "ВКР",
-    "topic": "Производство сыров",
-    "defenseDate": "20.11.2024",
-    "grade": "4",
-    "protocolNumber": "12313",
-    "protocolDate": "20.11.2024",
-    "midtermAssessmentResults": [
-      "Математический анализ|2023-2024|10|Хорошо|19.11.2024|Дмитров.Д.Д"
+    "sheetDto": {
+      "sheetId": 3,
+      "diplomaForm": "ВКР",
+      "topic": "Производство сыров",
+      "diplomaDefenseDate": "20.11.2024",
+      "protocolDate": "20.11.2024",
+      "examDate": "20.11.2024",
+      "protocolNumber": "12313",
+      "type": "DIPLOMA"
+    },
+    "grades": [
+      {
+        "value": "5",
+        "studentId": 1
+      },
+      {
+        "value": "4",
+        "studentId": 2
+      }
     ]
   }
+
+
 ]

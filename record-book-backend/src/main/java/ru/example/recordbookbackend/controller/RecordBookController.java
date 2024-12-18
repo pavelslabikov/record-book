@@ -26,10 +26,7 @@ import ru.example.recordbookbackend.repository.*;
 import ru.example.recordbookbackend.service.RecordBookSerializer;
 import ru.example.recordbookbackend.service.SignatureValidator;
 
-import javax.security.auth.x500.X500Principal;
 import java.io.*;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -97,16 +94,17 @@ public class RecordBookController {
         aggregation.setAuthor(userId);
         aggregation.setSerializationFormat(serializationFormat);
         aggregation.setSerializedContent(content);
+        aggregation.setHashHex(DigestUtils.sha256Hex(content));
 
 
         AggregationStatus aggregationStatus = new AggregationStatus();
-        aggregationStatus.setCreatedAt(aggregation.getCreatedAt());
+        aggregationStatus.setUpdatedAt(aggregation.getCreatedAt());
         aggregationStatus.setAggregationId(newId);
         aggregationStatus.setAggregationVersion(1L);
         aggregationStatus.setSignatureValidationResult(SignatureValidationResultType.INVALID);
         aggregationStatus.setSignatureValidationReason("Отсутствует подпись");
-        aggregationStatus.setIntegrityValidationResult(IntegrityValidationResultType.INVALID);
-        aggregationStatus.setIntegrityValidationReason("Проверка целостности агрегации невозможна без наличия подписи" );
+        aggregationStatus.setIntegrityValidationResult(IntegrityValidationResultType.VALID);
+        aggregationStatus.setIntegrityValidationReason(null);
 
         aggregationRepository.save(aggregation);
         aggregationStatusRepository.save(aggregationStatus);
@@ -157,10 +155,16 @@ public class RecordBookController {
 
         byte[] serializedContent = getSerializedContent(aggregation.getPeriodStart(), aggregation.getPeriodEnd());
         String current = DigestUtils.sha256Hex(serializedContent);
+        if (!current.equals(aggregation.getHashHex())) {
+            aggregationStatus.setIntegrityValidationResult(IntegrityValidationResultType.INVALID);
+            aggregationStatus.setIntegrityValidationReason("Хэш суммы не совпадают");
+        } else {
+            aggregationStatus.setIntegrityValidationResult(IntegrityValidationResultType.VALID);
+            aggregationStatus.setIntegrityValidationReason(null);
+        }
 
 
-
-        aggregationStatus.setCreatedAt(ZonedDateTime.now());
+        aggregationStatus.setUpdatedAt(ZonedDateTime.now());
         aggregationStatusRepository.save(aggregationStatus);
 
 
@@ -235,18 +239,17 @@ public class RecordBookController {
             certificateInfo.setNotBefore(certificate.getNotBefore().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
             certificateInfo.setNotAfter(certificate.getNotAfter().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
             certificateInfo.setContent(certificate.getEncoded());
-            certificateInfo.setSubjectInfo(certificate.getIssuerX500Principal().getName());
+            certificateInfo.setSubjectInfo(certificate.getSubjectX500Principal().getName());
+            certificateInfo.setIssuerInfo(certificate.getIssuerX500Principal().getName());
             certificateInfoRepository.save(certificateInfo);
             result.setCertificateInfo(certificateInfoMapper.toDto(certificateInfo));
 
             SignatureInfo signatureInfo = new SignatureInfo();
             signatureInfo.setType(signatureType);
-            signatureInfo.setDigestAlgorithm(DigestAlgorithmType.UNKNOWN);
             signatureInfo.setCreatedAt(ZonedDateTime.now());
             signatureInfo.setId(UUID.randomUUID());
             signatureInfo.setSignatureFile(signature);
             signatureInfo.setCertificate(certificateInfo.getId());
-            signatureInfo.setFileDigest(DigestUtils.sha256(file.getBytes()));
             signatureInfoRepository.save(signatureInfo);
             result.setSignatureInfo(signatureInfoMapper.toDto(signatureInfo));
 
@@ -254,14 +257,11 @@ public class RecordBookController {
 
             aggregationStatus.setSignatureValidationResult(SignatureValidationResultType.VALID);
             aggregationStatus.setSignatureValidationReason(null);
-            aggregationStatus.setIntegrityValidationResult(IntegrityValidationResultType.VALID);
-            aggregationStatus.setIntegrityValidationReason(null);
         } catch (Exception e) {
             aggregationStatus.setSignatureValidationResult(SignatureValidationResultType.INVALID);
             aggregationStatus.setSignatureValidationReason("Не удалось проверить подпись. Детали: " + e.getMessage());
-            aggregationStatus.setIntegrityValidationResult(IntegrityValidationResultType.INVALID);
-            aggregationStatus.setIntegrityValidationReason("Проверка целостности агрегации невозможна без наличия подписи" );
         }
+        aggregationStatus.setUpdatedAt(ZonedDateTime.now());
         aggregationRepository.save(aggregation);
         aggregationStatusRepository.save(aggregationStatus);
 

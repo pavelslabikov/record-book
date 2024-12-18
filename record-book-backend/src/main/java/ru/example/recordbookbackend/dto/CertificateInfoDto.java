@@ -27,6 +27,8 @@ public class CertificateInfoDto implements Serializable {
     private LocalDate notAfter;
     private String subjectInfo;
 
+    private String issuerInfo;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private ZonedDateTime createdAt;
 }

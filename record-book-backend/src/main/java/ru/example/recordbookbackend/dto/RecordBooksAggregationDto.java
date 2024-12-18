@@ -37,4 +37,6 @@ public class RecordBooksAggregationDto implements Serializable {
     private ZonedDateTime createdAt;
 
     private SerializationFormat serializationFormat;
+
+    private String hashHex;
 }

@@ -100,7 +100,8 @@ create table certificate_info
     not_before   date        null,
     not_after    date        null,
     content      bytea       not null,
-    subject_info varchar     not null,
+    subject_info varchar     null,
+    issuer_info varchar     null,
     created_at   timestamptz not null
 );
 
@@ -110,8 +111,6 @@ create table signature_info
     type              varchar     not null,
     certificate       uuid        null references certificate_info,
     signature_file    bytea       null,
-    file_digest       bytea       null,
-    digest_algorithm  varchar     null,
     signed_at         timestamptz null,
     created_at        timestamptz not null
 );
@@ -119,29 +118,30 @@ create table signature_info
 
 create table record_books_aggregation
 (
-    id           bigint not null ,
-    version bigint      not null,
-    period_start date        not null,
-    period_end   date        not null,
-    signature    uuid        null references signature_info,
-    author       uuid        not null references user_info,
+    id                   bigint      not null,
+    version              bigint      not null,
+    period_start         date        not null,
+    period_end           date        not null,
+    signature            uuid        null references signature_info,
+    author               uuid        not null references user_info,
     primary key (id, version),
-    serialization_format varchar not null ,
-    serialized_content bytea not null ,
-    created_at   timestamptz not null
+    serialization_format varchar     not null,
+    serialized_content   bytea       not null,
+    hash_hex             varchar     not null,
+    created_at           timestamptz not null
 );
 
 create table aggregation_status
 (
-    id                bigserial primary key,
-    aggregation_id bigint not null ,
-    aggregation_version bigint not null ,
-    signature_validation_result varchar not null ,
-    signature_validation_reason varchar  null ,
-    integrity_validation_result varchar not null ,
-    integrity_validation_reason varchar  null ,
-    created_at        timestamptz not null,
-foreign key (aggregation_id, aggregation_version) references record_books_aggregation
+    id                          bigserial primary key,
+    aggregation_id              bigint      not null,
+    aggregation_version         bigint      not null,
+    signature_validation_result varchar     not null,
+    signature_validation_reason varchar     null,
+    integrity_validation_result varchar     not null,
+    integrity_validation_reason varchar     null,
+    last_updated_at             timestamptz not null,
+    foreign key (aggregation_id, aggregation_version) references record_books_aggregation
 );
 
 

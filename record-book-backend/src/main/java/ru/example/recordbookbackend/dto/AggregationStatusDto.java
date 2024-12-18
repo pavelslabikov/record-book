@@ -27,5 +27,5 @@ public class AggregationStatusDto implements Serializable {
     private IntegrityValidationResultType integrityValidationResult;
     private String integrityValidationReason;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private ZonedDateTime createdAt;
+    private ZonedDateTime updatedAt;
 }

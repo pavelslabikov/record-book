@@ -27,12 +27,6 @@ public class SignatureInfo {
     @Column(name = "signature_file")
     private byte[] signatureFile;
 
-    @Column(name = "file_digest")
-    private byte[] fileDigest;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "digest_algorithm", length = Integer.MAX_VALUE)
-    private DigestAlgorithmType digestAlgorithm;
 
     @Column(name = "signed_at")
     private ZonedDateTime signedAt;

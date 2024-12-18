@@ -21,7 +21,6 @@ import java.util.UUID;
 public class SignatureInfoDto implements Serializable {
     private UUID id;
     private SignatureType type;
-    private DigestAlgorithmType digestAlgorithm;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private ZonedDateTime createdAt;
 }

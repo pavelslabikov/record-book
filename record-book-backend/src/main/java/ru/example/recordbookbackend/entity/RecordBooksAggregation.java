@@ -42,4 +42,7 @@ public class RecordBooksAggregation {
     @Column(name = "serialized_content", nullable = false)
     private byte[] serializedContent;
 
+    @Column(name = "hash_hex", nullable = false)
+    private String hashHex;
+
 }
